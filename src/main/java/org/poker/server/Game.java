@@ -6,24 +6,24 @@ import java.util.List;
 
 
 public class Game implements IGame {
-    private String mode = "P";
+    private String mode = "P"; // true if playing singleplayer otherwise simulation
 
 
     //flags for fold (someone didn't want to call) and flop (creating opening 3 cards)
     private boolean fold = false ;
     private boolean flop = true ;
-    private Deck deck;
+    private IDeck deck;
     private Player player1;
     private Player player2;
     private AI opponent1;
     private AI opponent2;
-    private Dialogue dialogue;
+    private IDialogue dialogue;
     private List<Card> table;
     private int[] bank = {0,0}; // how much money is in the bank from each player
     private int handle; // flag for whose turn it is
     private int round = 0; //round counter
 
-    public Game(Dialogue dialogue) {
+    public Game(IDialogue dialogue) {
         this.dialogue = dialogue;
         handle = 1;
         player1 = new Player();
@@ -36,7 +36,7 @@ public class Game implements IGame {
     @Override
     public void createPlayer(boolean single)
     {
-        if (single)
+        if (single == true)
         {
             dialogue.setUse_1(single);
             player1.setName(dialogue.getName());
@@ -175,30 +175,31 @@ public class Game implements IGame {
                 if (opponent1.getMoney() > opponent2.getMoney())
                 {
                     dialogue.out("*** Game over! Player 1 won! **\n");
-                    break;//end of game
+                    break;//koniec hry
                 }
                 else if (opponent1.getMoney() < opponent2.getMoney())
                 {
                     dialogue.out("*** Game over! Player 2 won! ***\n");
-                    break;//end of game
+                    break;//koniec hry
                 }
                 else
                 {
                     dialogue.out("Tie\n");
-                    break;//end of game
+                    break;//koniec hry
                 }
             }
             dialogue.out("Player 1: " + opponent1.getMoney() + "\n");
             dialogue.out("Player 2: " + opponent2.getMoney() + "\n");
             dialogue.out("*** NEW ROUND ***\n");
         }
+        return;
     }
 
     @Override
     public void startingSetting()
     {
         //creating new deck
-        Deck new_deck = new Deck();
+        IDeck new_deck = new Deck();
         new_deck.shuffleDeck();
         deck = new_deck;
         // crating flags for fold and flop
@@ -302,7 +303,14 @@ public class Game implements IGame {
     @Override
     public void setDifficulty(String dif)
     {
-        opponent1.setHard(!dif.equals("easy"));
+        if (dif.equals("easy"))
+        {
+            opponent1.setHard(false);
+        }
+        else
+        {
+            opponent1.setHard(true);
+        }
     }
 
     @Override
@@ -316,20 +324,20 @@ public class Game implements IGame {
             player1.calculateValue(table);
             opponent1.calculateValue(table);
             dialogue.out("Your best five:\n");
-            StringBuilder text = new StringBuilder();
+            String text = "";
             for (int i = 0; i < player1.best.size(); i++)
             {
-                text.append(player1.best.get(i).showCard()).append(" ");
+                text = text + player1.best.get(i).showCard() + " ";
             }
-            dialogue.out(text.toString());
+            dialogue.out(text);
             dialogue.out("\n");
             dialogue.out("Your opponent best five:\n");
-            text = new StringBuilder();
+            text = "";
             for (int i = 0; i < opponent1.best.size(); i++)
             {
-                text.append(opponent1.best.get(i).showCard()).append(" ");
+                text = text + opponent1.best.get(i).showCard() + " ";
             }
-            dialogue.out(text.toString());
+            dialogue.out(text);
             dialogue.out("\n");
 
             dialogue.out("You have " + player1.hand() + "\n");
@@ -363,22 +371,22 @@ public class Game implements IGame {
             opponent1.calculateValue(table);
 
             dialogue.out("Player 1 best five:");
-            StringBuilder text = new StringBuilder();
+            String text = "";
             for (int i = 0; i < opponent1.best.size(); i++)
             {
-                text.append(opponent1.best.get(i).showCard()).append(" ");
+                text = text + opponent1.best.get(i).showCard() + " ";
 
             }
-            dialogue.out(text.toString());
+            dialogue.out(text);
             dialogue.out("\n");
             opponent2.calculateValue(table);
-            text = new StringBuilder();
+            text = "";
             dialogue.out("Player 2 best five:");
             for (int i = 0; i < opponent2.best.size(); i++)
             {
-                text.append(opponent2.best.get(i).showCard()).append(" ");
+                text = text + opponent2.best.get(i).showCard() + " ";
             }
-            dialogue.out(text.toString());
+            dialogue.out(text);
             dialogue.out("\n");
 
 
@@ -416,29 +424,29 @@ public class Game implements IGame {
             // first player communication
             dialogue.setUse_1(true);
             dialogue.out("Your best five:\n");
-            StringBuilder text_1 = new StringBuilder();
+            String text_1 = "";
             for (int i = 0; i < player1.best.size(); i++)
             {
-                text_1.append(player1.best.get(i).showCard()).append(" ");
+                text_1 = text_1 + player1.best.get(i).showCard() + " ";
             }
-            dialogue.out(text_1.toString());
+            dialogue.out(text_1);
             dialogue.out("\n");
             dialogue.out("Your opponent best five:\n");
-            StringBuilder text_2 = new StringBuilder();
+            String text_2 = "";
             for (int i = 0; i < player2.best.size(); i++)
             {
-                text_2.append(player2.best.get(i).showCard()).append(" ");
+                text_2= text_2 + player2.best.get(i).showCard() + " ";
             }
-            dialogue.out(text_2.toString());
+            dialogue.out(text_2);
             dialogue.out("\n");
 
             // second player communication
             dialogue.setUse_1(false);
             dialogue.out("Your best five:\n");
-            dialogue.out(text_2.toString());
+            dialogue.out(text_2);
             dialogue.out("\n");
             dialogue.out("Your opponent best five:\n");
-            dialogue.out(text_1.toString());
+            dialogue.out(text_1);
             dialogue.out("\n");
 
             dialogue.setUse_1(true);
@@ -486,7 +494,7 @@ public class Game implements IGame {
     @Override
     public void difficultyDialogue()
     {
-        //dialogue for setting difficulty in single player
+        //dialogue for setting difficulty in singleplayer
         while (true)
         {
             dialogue.out("What difficulty do you want?\n");
@@ -518,66 +526,65 @@ public class Game implements IGame {
                 dialogue.setUse_1(true);
                 options(true);
                 String response = dialogue.getAnswer();
-                switch (response) {
-                    case "call":
-//call ->  opponent's turn
+                if (response.equals("call") ) //call ->  opponent's turn
+                {
+                    if (player1.getMoney() < bank[1] - bank[0])
+                    {
+                        bank[0] = bank[0] + player1.getMoney();
+                        player1.setMoney(0);
+                        player2.setMoney(player2.getMoney() + (bank[1] - bank[0]));
+                        bank[1] = bank[0];
+                    }
+                    else
+                    {
+                        player1.setMoney(player1.getMoney() - (bank[1] - bank[0]));
+                        bank[0] = bank[1];
+                    }
+                    handle = 0;
+                    dialogue.setUse_1(false);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to call\n");
+                    dialogue.out("**********\n");
 
-                        if (player1.getMoney() < bank[1] - bank[0]) {
-                            bank[0] = bank[0] + player1.getMoney();
-                            player1.setMoney(0);
-                            player2.setMoney(player2.getMoney() + (bank[1] - bank[0]));
-                            bank[1] = bank[0];
-                        } else {
-                            player1.setMoney(player1.getMoney() - (bank[1] - bank[0]));
-                            bank[0] = bank[1];
-                        }
-                        handle = 0;
-                        dialogue.setUse_1(false);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to call\n");
-                        dialogue.out("**********\n");
+                }
+                else if (response.equals("raise")) //raise -> opponent's turn
+                {
+                    dialogue.setUse_1(true);
+                    int bet = getBet(true);
+                    player1.setMoney(player1.getMoney() - bet);
+                    bank[0] = bank[0] + bet;
+                    handle = 0;
 
-                        break;
-                    case "raise":
-//raise -> opponent's turn
-
-                        dialogue.setUse_1(true);
-                        int bet = getBet(true);
-                        player1.setMoney(player1.getMoney() - bet);
-                        bank[0] = bank[0] + bet;
-                        handle = 0;
-
-                        dialogue.setUse_1(false);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to raise " + bet + " dollars\n");
-                        dialogue.out("**********\n");
-                        break;
-                    case "check":
-//check -> opponent's turn
-
-                        handle = 0;
-                        dialogue.setUse_1(false);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to check\n");
-                        dialogue.out("**********\n");
-                        break;
-                    case "fold":
-//fold -> opponent's win
-
-                        player2.setMoney(player2.getMoney() + bank[1] + bank[0]); //giving money to winner
-
-                        bank[0] = 0;
-                        bank[1] = 0;
-                        fold = true;
-                        dialogue.setUse_1(false);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to fold\n");
-                        dialogue.out("**********\n");
-                        break;
-                    default:
-                        dialogue.setUse_1(true);
-                        dialogue.out("WRONG INPUT\n");
-                        break;
+                    dialogue.setUse_1(false);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to raise " + bet + " dollars\n");
+                    dialogue.out("**********\n");
+                }
+                else if (response.equals("check")) //check -> opponent's turn
+                {
+                    handle = 0;
+                    dialogue.setUse_1(false);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to check\n");
+                    dialogue.out("**********\n");
+                    continue;
+                }
+                else if (response.equals("fold")) //fold -> opponent's win
+                {
+                    player2.setMoney(player2.getMoney() + bank[1] + bank[0]); //giving money to winner
+                    bank[0] = 0;
+                    bank[1] = 0;
+                    fold = true;
+                    dialogue.setUse_1(false);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to fold\n");
+                    dialogue.out("**********\n");
+                    break;
+                }
+                else
+                {
+                    dialogue.setUse_1(true);
+                    dialogue.out("WRONG INPUT\n");
                 }
 
             }
@@ -588,66 +595,65 @@ public class Game implements IGame {
                 dialogue.setUse_1(false);
                 options(false);
                 String response = dialogue.getAnswer();
-                switch (response) {
-                    case "call":
-//call ->  opponent's turn
+                if (response.equals("call") ) //call ->  opponent's turn
+                {
+                    if (player2.getMoney() < bank[1] - bank[0])
+                    {
+                        bank[1] = bank[1] + player2.getMoney();
+                        player2.setMoney(0);
+                        player1.setMoney(player1.getMoney() + (bank[0] - bank[1]));
+                        bank[0] = bank[1];
+                    }
+                    else
+                    {
+                        player2.setMoney(player2.getMoney() - (bank[0] - bank[1]));
+                        bank[1] = bank[0];
+                    }
+                    handle = -1;
+                    dialogue.setUse_1(true);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to call\n");
+                    dialogue.out("**********\n");
 
-                        if (player2.getMoney() < bank[1] - bank[0]) {
-                            bank[1] = bank[1] + player2.getMoney();
-                            player2.setMoney(0);
-                            player1.setMoney(player1.getMoney() + (bank[0] - bank[1]));
-                            bank[0] = bank[1];
-                        } else {
-                            player2.setMoney(player2.getMoney() - (bank[0] - bank[1]));
-                            bank[1] = bank[0];
-                        }
-                        handle = -1;
-                        dialogue.setUse_1(true);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to call\n");
-                        dialogue.out("**********\n");
+                }
+                else if (response.equals("raise")) //raise -> opponent's turn
+                {
+                    dialogue.setUse_1(false);
+                    int bet = getBet(false);
+                    player2.setMoney(player2.getMoney() - bet);
+                    bank[1] = bank[1] + bet;
+                    handle = 1;
 
-                        break;
-                    case "raise":
-//raise -> opponent's turn
-
-                        dialogue.setUse_1(false);
-                        int bet = getBet(false);
-                        player2.setMoney(player2.getMoney() - bet);
-                        bank[1] = bank[1] + bet;
-                        handle = 1;
-
-                        dialogue.setUse_1(true);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to raise " + bet + " dollars\n");
-                        dialogue.out("**********\n");
-                        break;
-                    case "check":
-//check -> opponent's turn
-
-                        handle = -1;
-                        dialogue.setUse_1(true);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to check\n");
-                        dialogue.out("**********\n");
-                        break;
-                    case "fold":
-//fold -> opponent's win
-
-                        player1.setMoney(player1.getMoney() + bank[1] + bank[0]); //giving money to winner
-
-                        bank[0] = 0;
-                        bank[1] = 0;
-                        fold = true;
-                        dialogue.setUse_1(true);
-                        dialogue.out("**********\n");
-                        dialogue.out("Opponent decided to fold\n");
-                        dialogue.out("**********\n");
-                        break;
-                    default:
-                        dialogue.setUse_1(false);
-                        dialogue.out("WRONG INPUT\n");
-                        break;
+                    dialogue.setUse_1(true);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to raise " + bet + " dollars\n");
+                    dialogue.out("**********\n");
+                }
+                else if (response.equals("check")) //check -> opponent's turn
+                {
+                    handle = -1;
+                    dialogue.setUse_1(true);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to check\n");
+                    dialogue.out("**********\n");
+                    continue;
+                }
+                else if (response.equals("fold")) //fold -> opponent's win
+                {
+                    player1.setMoney(player1.getMoney() + bank[1] + bank[0]); //giving money to winner
+                    bank[0] = 0;
+                    bank[1] = 0;
+                    fold = true;
+                    dialogue.setUse_1(true);
+                    dialogue.out("**********\n");
+                    dialogue.out("Opponent decided to fold\n");
+                    dialogue.out("**********\n");
+                    break;
+                }
+                else
+                {
+                    dialogue.setUse_1(false);
+                    dialogue.out("WRONG INPUT\n");
                 }
 
             }
@@ -682,103 +688,106 @@ public class Game implements IGame {
             {
                 options(true);	 //*** just for debugging***
                 String response = dialogue.getAnswer();
-                switch (response) {
-                    case "call":
-//call ->  opponent's turn
+                if (response.equals("call") ) //call ->  opponent's turn
+                {
+                    if (player1.getMoney() < bank[1] - bank[0])
+                    {
+                        bank[0] = bank[0] + player1.getMoney();
+                        player1.setMoney(0);
+                        opponent1.setMoney(opponent1.getMoney() + (bank[1] - bank[0]));
+                        bank[1] = bank[0];
+                    }
+                    else
+                    {
+                        player1.setMoney(player1.getMoney() - (bank[1] - bank[0]));
+                        bank[0] = bank[1];
+                    }
+                    handle = 0;
 
-                        if (player1.getMoney() < bank[1] - bank[0]) {
-                            bank[0] = bank[0] + player1.getMoney();
-                            player1.setMoney(0);
-                            opponent1.setMoney(opponent1.getMoney() + (bank[1] - bank[0]));
-                            bank[1] = bank[0];
-                        } else {
-                            player1.setMoney(player1.getMoney() - (bank[1] - bank[0]));
-                            bank[0] = bank[1];
-                        }
-                        handle = 0;
-
-                        break;
-                    case "raise":
-//raise -> opponent's turn
-
-                        int bet = getBet(true);
-                        player1.setMoney(player1.getMoney() - bet);
-                        bank[0] = bank[0] + bet;
-                        handle = 0;
-                        break;
-                    case "check":
-//check -> opponent's turn
-
-                        handle = 0;
-                        break;
-                    case "fold":
-//fold -> opponent's win
-
-                        opponent1.setMoney(opponent1.getMoney() + bank[1] + bank[0]); //giving money to winner
-
-                        bank[0] = 0;
-                        bank[1] = 0;
-                        fold = true;
-                        break;
-                    default:
-                        dialogue.out("WRONG INPUT\n");
-                        break;
+                }
+                else if (response.equals("raise")) //raise -> opponent's turn
+                {
+                    int bet = getBet(true);
+                    player1.setMoney(player1.getMoney() - bet);
+                    bank[0] = bank[0] + bet;
+                    handle = 0;
+                }
+                else if (response.equals("check")) //check -> opponent's turn
+                {
+                    handle = 0;
+                    continue;
+                }
+                else if (response.equals("fold")) //fold -> opponent's win
+                {
+                    opponent1.setMoney(opponent1.getMoney() + bank[1] + bank[0]); //giving money to winner
+                    bank[0] = 0;
+                    bank[1] = 0;
+                    fold = true;
+                    break;
+                }
+                else
+                {
+                    dialogue.out("WRONG INPUT\n");
                 }
 
             }
             else if (handle == 0) //opponent's turn
             {
-                String response = opponent1.decision(player1.getMoney(), bank); //AI decision-making
+                //dialogue.showCards(opponent1);
+                //dialogue.showTable(table);
+                String response = opponent1.decision(player1.getMoney(), bank); //AI decision making
                 dialogue.out("**********\n");
-                switch (response) {
-                    case "call":
-//call ->  adding card
+                if (response == "call") //call ->  adding card
+                {
+                    dialogue.out("Opponent decided to call\n");
+                    dialogue.out("**********\n");
 
-                        dialogue.out("Opponent decided to call\n");
-                        dialogue.out("**********\n");
+                    if (opponent1.getMoney() < bank[0] - bank[1])
+                    {
+                        bank[1] =  bank[1] + opponent1.getMoney();
+                        opponent1.setMoney(0);
+                        player1.setMoney(player1.getMoney() + (bank[0] - bank[1]));
+                        bank[0] = bank[1];
+                    }
+                    else
+                    {
+                        opponent1.setMoney(opponent1.getMoney() - (bank[0] - bank[1]));
+                        bank[1] =  bank[0];
+                    }
+                    handle = -1;
 
-                        if (opponent1.getMoney() < bank[0] - bank[1]) {
-                            bank[1] = bank[1] + opponent1.getMoney();
-                            opponent1.setMoney(0);
-                            player1.setMoney(player1.getMoney() + (bank[0] - bank[1]));
-                            bank[0] = bank[1];
-                        } else {
-                            opponent1.setMoney(opponent1.getMoney() - (bank[0] - bank[1]));
-                            bank[1] = bank[0];
-                        }
-                        handle = -1;
+                }
+                else if (response == "raise") //raise -> player's turn
+                {
 
-                        break;
-                    case "raise":
-//raise -> player's turn
-
-
-                        boolean over = bank[0] > bank[1];
-                        int bet = opponent1.raise(player1.getMoney() + bank[0], over, bank[0]); // how much he bets
-
-                        dialogue.out("Opponent decided to raise " + bet + " dollars\n");
-                        dialogue.out("**********\n");
-                        opponent1.setMoney(opponent1.getMoney() - bet);
-                        bank[1] = bank[1] + bet;
-                        handle = 1;
-                        break;
-                    case "check":
-//check -> adding card
-
-                        dialogue.out("Opponent decided to check\n");
-                        dialogue.out("**********\n");
-                        handle = -1;
-                        break;
-                    case "fold":
-//fold -> player's win
-
-                        dialogue.out("Opponent decided to fold\n");
-                        dialogue.out("**********\n");
-                        player1.setMoney(player1.getMoney() + bank[1] + bank[0]);
-                        bank[0] = 0;
-                        bank[1] = 0;
-                        fold = true;
-                        break;
+                    Boolean over = false;
+                    if (bank[0] > bank[1])
+                    {
+                        over = true;
+                    }
+                    int bet = opponent1.raise(player1.getMoney() + bank[0], over, bank[0]); //kolko raisne
+                    dialogue.out("Opponent decided to raise " + bet + " dollars\n");
+                    dialogue.out("**********\n");
+                    opponent1.setMoney(opponent1.getMoney() - bet);
+                    bank[1] = bank[1] + bet;
+                    handle = 1;
+                }
+                else if (response == "check") //check -> adding card
+                {
+                    dialogue.out("Opponent decided to check\n");
+                    dialogue.out("**********\n");
+                    handle = -1;
+                    continue;
+                }
+                else if (response == "fold") //fold -> player's win
+                {
+                    dialogue.out("Opponent decided to fold\n");
+                    dialogue.out("**********\n");
+                    player1.setMoney(player1.getMoney() + bank[1] + bank[0]);
+                    bank[0] = 0;
+                    bank[1] = 0;
+                    fold = true;
+                    break;
                 }
             }
             else if (handle == -1) //adding new card
@@ -814,50 +823,52 @@ public class Game implements IGame {
                 dialogue.showCards(opponent1);
                 dialogue.showTable(table);
                 String response = opponent1.decision(opponent2.getMoney(), bank); //AI decision
-                switch (response) {
-                    case "call":
-//call ->  turn: Player 2
+                if (response == "call") //call ->  turn: Player 2
+                {
+                    dialogue.out("Player 1 decided to call\n");
 
-                        dialogue.out("Player 1 decided to call\n");
+                    if (opponent1.getMoney() < bank[1] - bank[0])
+                    {
+                        bank[0] = bank[0] + opponent1.getMoney();
+                        opponent1.setMoney(0);
+                        opponent2.setMoney(opponent2.getMoney() + (bank[1] - bank[0]));
+                        bank[1] = bank[0];
+                    }
+                    else
+                    {
+                        opponent1.setMoney(opponent1.getMoney() - (bank[1] - bank[0]));
+                        bank[0] = bank[1];
+                    }
+                    handle = 0;
 
-                        if (opponent1.getMoney() < bank[1] - bank[0]) {
-                            bank[0] = bank[0] + opponent1.getMoney();
-                            opponent1.setMoney(0);
-                            opponent2.setMoney(opponent2.getMoney() + (bank[1] - bank[0]));
-                            bank[1] = bank[0];
-                        } else {
-                            opponent1.setMoney(opponent1.getMoney() - (bank[1] - bank[0]));
-                            bank[0] = bank[1];
-                        }
-                        handle = 0;
-
-                        break;
-                    case "raise":
-//raise -> turn: Player 2
-
-                        boolean over = bank[1] > bank[0];
-                        int bet = opponent1.raise(opponent2.getMoney() + bank[1], over, bank[1]); // how much he bets
-
-                        dialogue.out("Player 1 decided to raise " + bet + " dollars\n");
-                        opponent1.setMoney(opponent1.getMoney() - bet);
-                        bank[0] = bank[0] + bet;
-                        handle = 0;
-                        break;
-                    case "check":
-//check -> turn: Player 2
-
-                        dialogue.out("Player 1 decided to check\n");
-                        handle = 0;
-                        break;
-                    case "fold":
-//fold -> Player 2 won round
-
-                        dialogue.out("Player 1 decided to fold\n");
-                        opponent2.setMoney(opponent2.getMoney() + bank[1] + bank[0]);
-                        bank[0] = 0;
-                        bank[1] = 0;
-                        fold = true;
-                        break;
+                }
+                else if (response == "raise") //raise -> turn: Player 2
+                {
+                    Boolean over = false;
+                    if (bank[1] > bank[0])
+                    {
+                        over = true;
+                    }
+                    int bet = opponent1.raise(opponent2.getMoney() + bank[1], over, bank[1]); //kolko raisne
+                    dialogue.out("Player 1 decided to raise " + Integer.toString(bet) + " dollars\n");
+                    opponent1.setMoney(opponent1.getMoney() - bet);
+                    bank[0] = bank[0] + bet;
+                    handle = 0;
+                }
+                else if (response == "check") //check -> turn: Player 2
+                {
+                    dialogue.out("Player 1 decided to check\n");
+                    handle = 0;
+                    continue;
+                }
+                else if (response == "fold") //fold -> Player 2 won round
+                {
+                    dialogue.out("Player 1 decided to fold\n");
+                    opponent2.setMoney(opponent2.getMoney() + bank[1] + bank[0]);
+                    bank[0] = 0;
+                    bank[1] = 0;
+                    fold = true;
+                    break;
                 }
 
             }
@@ -866,51 +877,53 @@ public class Game implements IGame {
                 dialogue.showCards(opponent2);
                 dialogue.showTable(table);
                 String response = opponent2.decision(opponent1.getMoney(), bank); //AI decision
-                switch (response) {
-                    case "call":
-//call ->  adding card
+                if (response == "call") //call ->  adding card
+                {
+                    dialogue.out("Player 2 decided to call\n");
 
-                        dialogue.out("Player 2 decided to call\n");
+                    if (opponent2.getMoney() < bank[0] - bank[1])
+                    {
+                        bank[1] = bank[1] + opponent2.getMoney();
+                        opponent2.setMoney(0);
+                        opponent1.setMoney(opponent1.getMoney() + (bank[0] - bank[1]));
+                        bank[0] = bank[1];
+                    }
+                    else
+                    {
+                        opponent2.setMoney(opponent2.getMoney() - (bank[0] - bank[1]));
+                        bank[1] = bank[0];
+                    }
+                    handle = -1;
 
-                        if (opponent2.getMoney() < bank[0] - bank[1]) {
-                            bank[1] = bank[1] + opponent2.getMoney();
-                            opponent2.setMoney(0);
-                            opponent1.setMoney(opponent1.getMoney() + (bank[0] - bank[1]));
-                            bank[0] = bank[1];
-                        } else {
-                            opponent2.setMoney(opponent2.getMoney() - (bank[0] - bank[1]));
-                            bank[1] = bank[0];
-                        }
-                        handle = -1;
+                }
+                else if (response == "raise") //raise -> turn: Player 1
+                {
 
-                        break;
-                    case "raise":
-//raise -> turn: Player 1
-
-
-                        boolean over = bank[0] > bank[1];
-                        int bet = opponent2.raise(opponent1.getMoney() + bank[0], over, bank[0]); // how much he bets
-
-                        dialogue.out("Player 2 decided to raise " + bet + " dollars\n");
-                        opponent2.setMoney(opponent2.getMoney() - bet);
-                        bank[1] = bank[1] + bet;
-                        handle = 1;
-                        break;
-                    case "check":
-//check -> adding card
-
-                        dialogue.out("Player 2 decided to check\n");
-                        handle = -1;
-                        break;
-                    case "fold":
-//fold -> Player 1 won
-
-                        dialogue.out("Player 2 decided to fold\n");
-                        opponent1.setMoney(opponent1.getMoney() + bank[1] + bank[0]);
-                        bank[0] = 0;
-                        bank[1] = 0;
-                        fold = true;
-                        break;
+                    Boolean over = false;
+                    if (bank[0] > bank[1])
+                    {
+                        over = true;
+                    }
+                    int bet = opponent2.raise(opponent1.getMoney() + bank[0], over, bank[0]); //kolko raisne
+                    dialogue.out("Player 2 decided to raise " + Integer.toString(bet) + " dollars\n");
+                    opponent2.setMoney(opponent2.getMoney() - bet);
+                    bank[1] = bank[1] + bet;
+                    handle = 1;
+                }
+                else if (response == "check") //check -> adding card
+                {
+                    dialogue.out("Player 2 decided to check\n");
+                    handle = -1;
+                    continue;
+                }
+                else if (response == "fold") //fold -> Player 1 won
+                {
+                    dialogue.out("Player 2 decided to fold\n");
+                    opponent1.setMoney(opponent1.getMoney() + bank[1] + bank[0]);
+                    bank[0] = 0;
+                    bank[1] = 0;
+                    fold = true;
+                    break;
                 }
             }
             else if (handle == -1) //adding cards
@@ -980,4 +993,3 @@ public class Game implements IGame {
 
 
 }
-
