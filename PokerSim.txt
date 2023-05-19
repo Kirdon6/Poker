@@ -1,0 +1,207 @@
+Jim's cards are:H8 CK 
+Cards on table:D8 D3 C2 
+Player 1 decided to check
+Joe's cards are:HQ SK 
+Cards on table:D8 D3 C2 
+Player 2 decided to check
+Jim's cards are:H8 CK 
+Cards on table:D8 D3 C2 CJ 
+Player 1 decided to check
+Joe's cards are:HQ SK 
+Cards on table:D8 D3 C2 CJ 
+Player 2 decided to raise 269 dollars
+Jim's cards are:H8 CK 
+Cards on table:D8 D3 C2 CJ 
+Player 1 decided to call
+Joe's cards are:HQ SK 
+Cards on table:D8 D3 C2 CJ 
+Player 2 decided to raise 157 dollars
+Jim's cards are:H8 CK 
+Cards on table:D8 D3 C2 CJ 
+Player 1 decided to fold
+Player 1: 731
+Player 2: 1269
+*** NEW ROUND ***
+Jim's cards are:SJ H2 
+Cards on table:S2 CA H10 
+Player 1 decided to check
+Joe's cards are:H6 S9 
+Cards on table:S2 CA H10 
+Player 2 decided to check
+Jim's cards are:SJ H2 
+Cards on table:S2 CA H10 D8 
+Player 1 decided to check
+Joe's cards are:H6 S9 
+Cards on table:S2 CA H10 D8 
+Player 2 decided to raise 411 dollars
+Jim's cards are:SJ H2 
+Cards on table:S2 CA H10 D8 
+Player 1 decided to fold
+Player 1: 731
+Player 2: 1269
+*** NEW ROUND ***
+Jim's cards are:S2 C3 
+Cards on table:D5 H6 C6 
+Player 1 decided to check
+Joe's cards are:H9 C4 
+Cards on table:D5 H6 C6 
+Player 2 decided to raise 515 dollars
+Jim's cards are:S2 C3 
+Cards on table:D5 H6 C6 
+Player 1 decided to call
+Joe's cards are:H9 C4 
+Cards on table:D5 H6 C6 
+Player 2 decided to raise 229 dollars
+Jim's cards are:S2 C3 
+Cards on table:D5 H6 C6 
+Player 1 decided to call
+Joe's cards are:H9 C4 
+Cards on table:D5 H6 C6 
+Player 2 decided to check
+Jim's cards are:S2 C3 
+Cards on table:D5 H6 C6 HA 
+Player 1 decided to check
+Joe's cards are:H9 C4 
+Cards on table:D5 H6 C6 HA 
+Player 2 decided to check
+Jim's cards are:S2 C3 
+Cards on table:D5 H6 C6 HA SA 
+Player 1 decided to check
+Joe's cards are:H9 C4 
+Cards on table:D5 H6 C6 HA SA 
+Player 2 decided to check
+Player 1 best five:HA SA C6 H6 D5 
+Player 2 best five:HA SA C6 H6 D5 
+Player 1 has Two Pairs
+Player 2 has Two Pairs
+Tie!
+Player 1: 731
+Player 2: 1269
+*** NEW ROUND ***
+Jim's cards are:DK C2 
+Cards on table:S2 S6 CA 
+Player 1 decided to check
+Joe's cards are:CQ C6 
+Cards on table:S2 S6 CA 
+Player 2 decided to raise 370 dollars
+Jim's cards are:DK C2 
+Cards on table:S2 S6 CA 
+Player 1 decided to fold
+Player 1: 731
+Player 2: 1269
+*** NEW ROUND ***
+Jim's cards are:CK CQ 
+Cards on table:H9 HA SK 
+Player 1 decided to check
+Joe's cards are:C4 H2 
+Cards on table:H9 HA SK 
+Player 2 decided to check
+Jim's cards are:CK CQ 
+Cards on table:H9 HA SK DQ 
+Player 1 decided to check
+Joe's cards are:C4 H2 
+Cards on table:H9 HA SK DQ 
+Player 2 decided to check
+Jim's cards are:CK CQ 
+Cards on table:H9 HA SK DQ S5 
+Player 1 decided to check
+Joe's cards are:C4 H2 
+Cards on table:H9 HA SK DQ S5 
+Player 2 decided to check
+Player 1 best five:SK CK DQ CQ H9 
+Player 2 best five:HA SK DQ H9 S5 
+Player 1 has Two Pairs
+Player 2 has High Card
+Player 1 won!
+Player 1: 731
+Player 2: 1269
+*** NEW ROUND ***
+Jim's cards are:C10 C9 
+Cards on table:SQ S7 S3 
+Player 1 decided to raise 208 dollars
+Joe's cards are:S5 CA 
+Cards on table:SQ S7 S3 
+Player 2 decided to call
+Jim's cards are:C10 C9 
+Cards on table:SQ S7 S3 HA 
+Player 1 decided to check
+Joe's cards are:S5 CA 
+Cards on table:SQ S7 S3 HA 
+Player 2 decided to check
+Jim's cards are:C10 C9 
+Cards on table:SQ S7 S3 HA D6 
+Player 1 decided to check
+Joe's cards are:S5 CA 
+Cards on table:SQ S7 S3 HA D6 
+Player 2 decided to check
+Player 1 best five:HA SQ S7 D6 S3 
+Player 2 best five:HA CA SQ S7 S3 
+Player 1 has High Card
+Player 2 has Pair
+Player 2 won!
+Player 1: 523
+Player 2: 1477
+*** NEW ROUND ***
+Jim's cards are:CQ D3 
+Cards on table:SA DQ H4 
+Player 1 decided to check
+Joe's cards are:S3 S9 
+Cards on table:SA DQ H4 
+Player 2 decided to check
+Jim's cards are:CQ D3 
+Cards on table:SA DQ H4 HA 
+Player 1 decided to check
+Joe's cards are:S3 S9 
+Cards on table:SA DQ H4 HA 
+Player 2 decided to raise 484 dollars
+Jim's cards are:CQ D3 
+Cards on table:SA DQ H4 HA 
+Player 1 decided to fold
+Player 1: 523
+Player 2: 1477
+*** NEW ROUND ***
+Jim's cards are:CQ CJ 
+Cards on table:D7 S5 C4 
+Player 1 decided to raise 175 dollars
+Joe's cards are:C10 D10 
+Cards on table:D7 S5 C4 
+Player 2 decided to fold
+Player 1: 523
+Player 2: 1477
+*** NEW ROUND ***
+Jim's cards are:SA C4 
+Cards on table:S6 HJ H8 
+Player 1 decided to check
+Joe's cards are:C9 C6 
+Cards on table:S6 HJ H8 
+Player 2 decided to raise 432 dollars
+Jim's cards are:SA C4 
+Cards on table:S6 HJ H8 
+Player 1 decided to call
+Joe's cards are:C9 C6 
+Cards on table:S6 HJ H8 
+Player 2 decided to raise 283 dollars
+Jim's cards are:SA C4 
+Cards on table:S6 HJ H8 
+Player 1 decided to call
+Joe's cards are:C9 C6 
+Cards on table:S6 HJ H8 
+Player 2 decided to check
+Jim's cards are:SA C4 
+Cards on table:S6 HJ H8 D7 
+Player 1 decided to check
+Joe's cards are:C9 C6 
+Cards on table:S6 HJ H8 D7 
+Player 2 decided to check
+Jim's cards are:SA C4 
+Cards on table:S6 HJ H8 D7 H7 
+Player 1 decided to check
+Joe's cards are:C9 C6 
+Cards on table:S6 HJ H8 D7 H7 
+Player 2 decided to check
+Player 1 best five:HJ H8 D7 H7 S6 
+Player 2 best five:HJ D7 H7 S6 C6 
+Player 1 has Pair
+Player 2 has Two Pairs
+Player 2 won!
+*** Game over! Player 2 won! ***
