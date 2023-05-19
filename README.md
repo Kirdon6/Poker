@@ -77,7 +77,7 @@ In the simulation, two computers play against each other. One is set to hard dif
 In the network game, two players can connect to server and play against each other. In order to play network game, it is necessary to create server (Main.java) choose network game and create two clients (Client.java).
 
 
-Potential Improvements
+## Potential Improvements
 This game has several potential areas for improvement. Here are a few suggestions:
 
 - Creating a graphical user interface
